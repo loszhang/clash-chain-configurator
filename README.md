@@ -10,36 +10,66 @@
 - 💻 简洁美观的 Web 界面
 - 🔧 自动处理 REALITY short-id 引号问题
 
-## 📦 依赖安装
-
-```bash
-pip install flask requests pyyaml
-```
-
 ## 🚀 快速开始
 
-1. 安装依赖：
+### 方式一：Docker 部署（推荐）
+
+**使用 Docker Compose（最简单）：**
+
 ```bash
-pip install -r requirements.txt
-# 或
-pip install flask requests pyyaml
+# 克隆项目
+git clone https://github.com/loszhang/clash-chain-configurator.git
+cd clash-chain-configurator
+
+# 启动服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
 ```
 
-2. 运行程序：
+**或使用 Docker 命令：**
+
+```bash
+# 构建镜像
+docker build -t clash-chain-configurator .
+
+# 运行容器
+docker run -d \
+  --name clash-chain-configurator \
+  -p 5000:5000 \
+  -v $(pwd)/node_config.json:/app/node_config.json \
+  --restart unless-stopped \
+  clash-chain-configurator
+```
+
+**访问地址：**
+```
+http://localhost:5000
+```
+
+### 方式二：本地部署
+
+**1. 安装依赖：**
+```bash
+pip install -r requirements.txt
+```
+
+**2. 运行程序：**
 ```bash
 python sub_converter.py
 ```
 
-3. 打开浏览器访问：
+**3. 访问地址：**
 ```
 http://127.0.0.1:5000
 ```
 
-4. 配置住宅 IP 节点信息并保存
+### 使用步骤
 
-5. 输入原始订阅链接，生成新的链接
-
-6. 将生成的链接添加到 Clash 客户端中
+1. 在 Web 界面配置住宅 IP 节点信息并保存
+2. 输入原始订阅链接，生成新的链接
+3. 将生成的链接添加到 Clash 客户端中
 
 ## 🎯 使用场景
 
