@@ -9,7 +9,12 @@ from flask import Flask, request, Response, render_template, jsonify
 app = Flask(__name__)
 
 # ================= 配置区域 =================
-CONFIG_FILE = 'node_config.json'
+DATA_DIR = 'data'
+CONFIG_FILE = os.path.join(DATA_DIR, 'node_config.json')
+
+# 确保数据目录存在
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR, exist_ok=True)
 
 # 默认配置 (如果不手动设置，会使用这个)
 DEFAULT_CONFIG = {

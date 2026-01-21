@@ -7,8 +7,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      # 持久化配置文件
-      - ./node_config.json:/app/node_config.json
+      # 持久化数据目录
+      - ./data:/app/data
     restart: unless-stopped
     environment:
       - TZ=Asia/Shanghai

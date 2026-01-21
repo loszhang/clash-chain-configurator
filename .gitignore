@@ -1,5 +1,6 @@
 # 用户配置文件（包含代理服务器的用户名和密码）
 node_config.json
+data/
 
 # Python 缓存文件
 __pycache__/
