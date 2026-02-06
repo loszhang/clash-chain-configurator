@@ -12,6 +12,10 @@ app = Flask(__name__)
 DATA_DIR = 'data'
 CONFIG_FILE = os.path.join(DATA_DIR, 'node_config.json')
 
+# Basic Auth 配置 (可通环境变量修改)
+AUTH_USERNAME = os.environ.get('AUTH_USERNAME', 'admin')
+AUTH_PASSWORD = os.environ.get('AUTH_PASSWORD', 'admin123')
+
 # 确保数据目录存在
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR, exist_ok=True)
@@ -53,6 +57,29 @@ yaml.add_representer(QuotedStr, quoted_scalar_representer, Dumper=yaml.SafeDumpe
 PRE_PROXY_GROUP_NAME = '🚀 链式前置'
 TARGET_MAIN_GROUP_TYPES = ['select']
 # ===========================================
+
+def check_auth(username, password):
+    """验证用户名和密码"""
+    return username == AUTH_USERNAME and password == AUTH_PASSWORD
+
+def authenticate():
+    """发送 401 响应以请求身份验证"""
+    return Response(
+        'Could not verify your access level for that URL.\n'
+        'You have to login with proper credentials', 401,
+        {'WWW-Authenticate': 'Basic realm="Login Required"'}
+    )
+
+@app.before_request
+def require_auth():
+    """全局请求拦截器，排除 /convert 接口"""
+    # 允许访问 /convert 接口而无需认证
+    if request.path == '/convert':
+        return None
+        
+    auth = request.authorization
+    if not auth or not check_auth(auth.username, auth.password):
+        return authenticate()
 
 @app.route('/')
 def home():
